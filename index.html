@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MindfulChat - Your Mental Health Companion</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">
+      <a href="#home">MindfulChat</a>
+    </div>
+    <div class="nav-links">
+      <ul>
+        <li><a href="#home" class="active">Home</a></li>
+        <li><a href="#services">Services</a></li>
+      </ul>
+    </div>
+    <div class="burger-menu">
+      <i class="fas fa-bars"></i>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero">
+    <div class="hero-content">
+      <h1>Welcome to MindfulChat</h1>
+      <p>Your companion for mental well-being and emotional support</p>
+      <a href="#chat-section" class="cta-button">Talk to MindfulChat</a>
+    </div>
+    <div class="hero-image">
+      <img src="Untitled design.png" alt="MindfulChat Illustration">
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section id="services" class="services">
+    <h2 class="section-title">Our Services</h2>
+    <div class="service-cards">
+      <div class="service-card">
+        <div class="card-icon"><i class="fas fa-comments"></i></div>
+        <h3>AI Chat Support</h3>
+        <p>24/7 emotional support and guidance through our AI chatbot</p>
+      </div>
+      <div class="service-card">
+        <div class="card-icon"><i class="fas fa-brain"></i></div>
+        <h3>Mental Health Assessment</h3>
+        <p>Simple tools to check in on your mental well-being regularly</p>
+      </div>
+      <div class="service-card">
+        <div class="card-icon"><i class="fas fa-book"></i></div>
+        <h3>Resource Library</h3>
+        <p>Access to articles, videos, and exercises for mental wellness</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Chat Section -->
+  <section id="chat-section" class="chat-section">
+    <h2 class="section-title">Talk to MindfulChat</h2>
+    <p class="section-description">Share your thoughts and feelings, and get supportive guidance</p>
+    <div class="chat-container">
+      <div class="chat-messages" id="chat-messages"></div>
+      
+      <div class="typing-indicator hidden" id="typing-indicator">
+        <span></span><span></span><span></span>
+      </div>
+      
+      <form id="chat-form" class="chat-input-form">
+        <input 
+          type="text" 
+          id="user-input" 
+          placeholder="Type your message here..." 
+          autocomplete="off"
+          required
+        >
+        <button type="submit">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <h2>Ready to Start Your Wellness Journey?</h2>
+    <p>MindfulChat is here to support you 24/7, wherever you are.</p>
+    <a href="#chat-section" class="cta-button">Chat Now</a>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>MindfulChat</h3>
+        <p>Your companion for mental well-being</p>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin"></i></a>
+        </div>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#resources">Resources</a></li>
+          <li><a href="#about">About Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Important</h3>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Crisis Resources</a></li>
+          <li><a href="#">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Important Disclaimer</h3>
+        <p>MindfulChat is not a replacement for professional mental health treatment. If you're experiencing a crisis, please contact emergency services or a mental health professional immediately.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 MindfulChat. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
