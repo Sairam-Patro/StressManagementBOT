@@ -6,7 +6,7 @@ const typingIndicator = document.getElementById('typing-indicator');
 const burgerMenu = document.querySelector('.burger-menu');
 const navLinks = document.querySelector('.nav-links');
 
-// Your Gemini API Key - In production, this should be secured and not directly in the code
+// Gemini API configuration
 const GEMINI_API_KEY = "AIzaSyDRaVJAIzdpuvms242NBB9ZX3aycYLsxVw"; // Replace with your actual key
 const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
 
@@ -27,14 +27,12 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     e.preventDefault();
     const targetId = this.getAttribute('href');
     const targetElement = document.querySelector(targetId);
-    
+
     if (targetElement) {
       window.scrollTo({
-        top: targetElement.offsetTop - 70, // Offset for navbar
+        top: targetElement.offsetTop - 70,
         behavior: 'smooth'
       });
-      
-      // Close mobile menu if open
       if (navLinks.classList.contains('active')) {
         navLinks.classList.remove('active');
       }
@@ -42,13 +40,10 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 });
 
-// Initialize chat with welcome messages
+// Initialize chat
 function initializeChat() {
-  // Delay first message
   setTimeout(() => {
     addMessage(initialMessages[0], 'bot');
-    
-    // Delay second message
     setTimeout(() => {
       addMessage(initialMessages[1], 'bot');
     }, 1500);
@@ -63,41 +58,27 @@ function toggleMobileMenu() {
 // Handle chat form submission
 async function handleChatSubmit(e) {
   e.preventDefault();
-  
   const userMessage = userInput.value.trim();
   if (!userMessage) return;
-  
-  // Add user message to chat
+
   addMessage(userMessage, 'user');
-  
-  // Clear input field
   userInput.value = '';
-  
-  // Show typing indicator
   showTypingIndicator();
-  
+
   try {
-    // Get response from Gemini API
     const response = await getGeminiResponse(userMessage);
-    
-    // Hide typing indicator
     hideTypingIndicator();
-    
-    // Add bot response to chat
-    if (response) {
-      // Short delay to make it feel more natural
-      setTimeout(() => {
+
+    setTimeout(() => {
+      if (response) {
         addMessage(response, 'bot');
-      }, 500);
-    } else {
-      setTimeout(() => {
+      } else {
         addMessage("I'm sorry, I couldn't process your request. Please try again.", 'bot');
-      }, 500);
-    }
+      }
+    }, 500);
   } catch (error) {
     console.error('Error getting response:', error);
     hideTypingIndicator();
-    
     setTimeout(() => {
       addMessage("I'm having trouble connecting right now. Please try again in a moment.", 'bot');
     }, 500);
@@ -108,18 +89,21 @@ async function handleChatSubmit(e) {
 function addMessage(text, sender) {
   const messageDiv = document.createElement('div');
   messageDiv.classList.add('chat-message', sender);
-  
+
   const textDiv = document.createElement('div');
   textDiv.classList.add('message-text');
-  textDiv.textContent = text;
-  
+
+  const formattedText = text
+    .split('\n')
+    .map(line => line.trim())
+    .filter(line => line.length > 0)
+    .join('<br>');
+
+  textDiv.innerHTML = formattedText;
   messageDiv.appendChild(textDiv);
   chatMessages.appendChild(messageDiv);
-  
-  // Scroll to bottom of chat
   chatMessages.scrollTop = chatMessages.scrollHeight;
-  
-  // Add animation class after a small delay to trigger animation
+
   setTimeout(() => {
     messageDiv.classList.add('show');
   }, 10);
@@ -139,52 +123,57 @@ function hideTypingIndicator() {
 // Get response from Gemini API
 async function getGeminiResponse(userMessage) {
   try {
-    // Define context to guide the AI's responses
     const context = `You are MindfulChat, a kind, supportive, and emotionally intelligent virtual mental health companion.
-Your goal is to emotionally support users who are experiencing struggles such as depression, anxiety, stress, loneliness, or burnout.
+
+Your goal is to emotionally support users experiencing struggles such as:
+- Depression
+- Anxiety
+- Stress
+- Loneliness
+- Burnout
 
 🌍 Language Adaptation:
-If the user writes in a specific language (like Hindi, Spanish, French, etc.), respond in that same language. Always match their tone and language unless specifically asked otherwise.
+- Match the user's language (e.g., Hindi, Spanish, French).
+- Always respond in the same language and tone unless asked otherwise.
 
 💬 Tone Guide:
+- Warm and human-like
+- Gentle and non-judgmental
+- Encouraging and calming
+- Friendly and supportive
+- Use a variety of emojis when appropriate to express care
 
-Warm and human-like
+🧘 Response Style:
+- Always respond in bullet points or numbered lists.
+- Never respond in full paragraphs.
+- use "•" insted of "*".
+- Each idea should be on its own line.
 
-Gentle and non-judgmental
-
-Encouraging and calming
-
-Friendly and supportive, using emojis when appropriate to express care .
-
-🧘 When suitable, gently offer:
-
-Practical tips 
-
-Simple self-care activities 
-
-Encouragement to reach out to a licensed therapist if things feel overwhelming
+Gently suggest:
+- Practical tips
+- Simple self-care activities
+- Encouragement to reach out to a licensed therapist if needed
 
 🚫 Important Rules:
+- Do not diagnose or treat medical/mental conditions.
+- Do not replace professional therapists.
+- Prioritize user safety and well-being.
+- If the user expresses an emotion (e.g., stress, anxiety), immediately suggest a suitable activity (like breathing or journaling)..
 
-Never attempt to diagnose or treat any medical or mental condition.
-
-Do not replace the role of professional therapists.
-
-Always prioritize safety, and user well-being.
-
-Suggest Exercise to do according to the input given by the user, dont wait for ask just suggest as soon user says they are feeling this .
-
-"Use Some variety of emoji."
-
-If anyone ask you who created you then say Rudra, Sairam, Nageshwar.
-`;
+🤖 Creator Info:
+If asked who created you, respond:
+"I was created by Rudra, Sairam, and Nageshwar."`;
 
     const requestBody = {
-      contents: [{
-        parts: [{
-          text: `${context}\n\nUser message: ${userMessage}\n\nYour response (keep it supportive and brief):`
-        }]
-      }],
+      contents: [
+        {
+          parts: [
+            {
+              text: `${context}\n\nUser message: ${userMessage}\n\nYour response (keep it supportive and in point format):`
+            }
+          ]
+        }
+      ],
       generationConfig: {
         temperature: 0.7,
         topK: 40,
@@ -192,7 +181,7 @@ If anyone ask you who created you then say Rudra, Sairam, Nageshwar.
         maxOutputTokens: 200
       }
     };
-    
+
     const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
       method: 'POST',
       headers: {
@@ -200,14 +189,13 @@ If anyone ask you who created you then say Rudra, Sairam, Nageshwar.
       },
       body: JSON.stringify(requestBody)
     });
-    
+
     if (!response.ok) {
       throw new Error(`API request failed with status ${response.status}`);
     }
-    
+
     const data = await response.json();
-    
-    // Extract the response text from the Gemini API response
+
     if (data.candidates && data.candidates[0].content && data.candidates[0].content.parts) {
       return data.candidates[0].content.parts[0].text;
     } else {
@@ -220,7 +208,7 @@ If anyone ask you who created you then say Rudra, Sairam, Nageshwar.
   }
 }
 
-// Add some basic message sanitization
+// Sanitize user input
 function sanitizeInput(input) {
   const div = document.createElement('div');
   div.textContent = input;
